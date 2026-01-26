@@ -1,0 +1,88 @@
+##############################
+# USERS
+##############################
+
+# Получить всех пользователей
+GET http://localhost:3000/users
+Accept: application/json
+
+###
+
+# Получить пользователя по ID
+GET http://localhost:3000/users/6976eeb39842ddd5e9774d5a
+Accept: application/json
+
+###
+
+# Создать нового пользователя
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "firstName": "Arujan",
+  "lastName": "Abilmajin",
+  "email": "arujan1@example.com",
+  "role": "student"
+}
+
+###
+
+# Обновить пользователя по ID
+PUT http://localhost:3000/users/6976eeb39842ddd5e9774d5a
+Content-Type: application/json
+
+{
+  "firstName": "Arujan",
+  "lastName": "Abilmajin",
+  "role": "teacher"
+}
+
+###
+
+# Удалить пользователя по ID
+DELETE http://localhost:3000/users/{{USER_ID}}
+
+##############################
+# TASKS
+##############################
+
+# Получить все задачи
+GET http://localhost:3000/tasks
+Accept: application/json
+
+###
+
+# Получить задачу по ID
+GET http://localhost:3000/tasks/{{TASK_ID}}
+Accept: application/json
+
+###
+
+# Создать новую задачу
+POST http://localhost:3000/tasks
+Content-Type: application/json
+
+{
+  "title": "Finish homework",
+  "description": "Math exercises",
+  "dueDate": "2026-02-01",
+  "status": "pending",
+  "priority": 2,
+  "userId": "6976eeb39842ddd5e9774d5a"
+}
+
+###
+
+# Обновить задачу по ID
+PUT http://localhost:3000/tasks/6976f1369842ddd5e9774d5f
+Content-Type: application/json
+
+{
+  "status": "completed",
+  "priority": 3
+}
+
+###
+
+# Удалить задачу по ID
+DELETE http://localhost:3000/tasks/6976f1369842ddd5e9774d5f
