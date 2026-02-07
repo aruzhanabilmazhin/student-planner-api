@@ -1,2 +1,12 @@
-node_modules
+# Environment variables
 .env
+
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
