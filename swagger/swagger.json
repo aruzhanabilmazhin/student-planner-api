@@ -1,0 +1,231 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Student Planner API",
+    "version": "1.0.0",
+    "description": "API for managing users and tasks with JWT authentication"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/users/register": {
+      "post": {
+        "summary": "Register a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/User" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "User registered successfully" },
+          "400": { "description": "Invalid input or email already exists" },
+          "500": { "description": "Server error" }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "summary": "Login user and get JWT token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UserLogin" } }
+          }
+        },
+        "responses": {
+          "200": { "description": "Login successful, returns JWT token" },
+          "401": { "description": "Invalid credentials" },
+          "500": { "description": "Server error" }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Get all users",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Users retrieved successfully" },
+          "401": { "description": "Unauthorized" },
+          "500": { "description": "Server error" }
+        }
+      },
+      "post": {
+        "summary": "Create a new user",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/User" } } }
+        },
+        "responses": {
+          "201": { "description": "User created" },
+          "400": { "description": "Invalid input" },
+          "500": { "description": "Server error" }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Get single user by ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "User found" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "User not found" },
+          "500": { "description": "Server error" }
+        }
+      },
+      "put": {
+        "summary": "Update user by ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UserUpdate" } } }
+        },
+        "responses": {
+          "200": { "description": "User updated" },
+          "400": { "description": "Invalid input" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "User not found" },
+          "500": { "description": "Server error" }
+        }
+      },
+      "delete": {
+        "summary": "Delete user by ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "204": { "description": "User deleted" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "User not found" },
+          "500": { "description": "Server error" }
+        }
+      }
+    },
+    "/tasks": {
+      "get": {
+        "summary": "Get all tasks",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Tasks retrieved" },
+          "401": { "description": "Unauthorized" },
+          "500": { "description": "Server error" }
+        }
+      },
+      "post": {
+        "summary": "Create a new task",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Task" } } }
+        },
+        "responses": {
+          "201": { "description": "Task created" },
+          "400": { "description": "Invalid input" },
+          "401": { "description": "Unauthorized" },
+          "500": { "description": "Server error" }
+        }
+      }
+    },
+    "/tasks/{id}": {
+      "get": {
+        "summary": "Get single task by ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "Task found" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Task not found" },
+          "500": { "description": "Server error" }
+        }
+      },
+      "put": {
+        "summary": "Update task by ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TaskUpdate" } } }
+        },
+        "responses": {
+          "200": { "description": "Task updated" },
+          "400": { "description": "Invalid input" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Task not found" },
+          "500": { "description": "Server error" }
+        }
+      },
+      "delete": {
+        "summary": "Delete task by ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "204": { "description": "Task deleted" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Task not found" },
+          "500": { "description": "Server error" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "required": ["email", "password", "firstName", "lastName", "role"],
+        "properties": {
+          "firstName": { "type": "string", "example": "Fima" },
+          "lastName": { "type": "string", "example": "Figma" },
+          "email": { "type": "string", "example": "user@example.com" },
+          "password": { "type": "string", "example": "12345" },
+          "role": { "type": "string", "example": "student" }
+        }
+      },
+      "UserLogin": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": { "type": "string", "example": "user@example.com" },
+          "password": { "type": "string", "example": "12345" }
+        }
+      },
+      "UserUpdate": {
+        "type": "object",
+        "properties": {
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "role": { "type": "string" }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "required": ["title", "status"],
+        "properties": {
+          "title": { "type": "string", "example": "Finish homework" },
+          "description": { "type": "string", "example": "Math exercises" },
+          "status": { "type": "string", "example": "pending" },
+          "priority": { "type": "integer", "example": 2 },
+          "assignedTo": { "type": "string", "example": "userId" },
+          "dueDate": { "type": "string", "format": "date-time", "example": "2026-02-01T12:00:00.000Z" }
+        }
+      },
+      "TaskUpdate": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "example": "completed" },
+          "priority": { "type": "integer", "example": 3 }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+    }
+  }
+}

@@ -1,80 +1,115 @@
+@baseUrl = http://localhost:3000
+@token =
+@userId =
+@taskId =
+
 ##############################
-# USERS
+# AUTHENTICATION
 ##############################
 
-# Получить всех пользователей
-GET http://localhost:3000/users
-Accept: application/json
-
-###
-
-# Получить пользователя по ID
-GET http://localhost:3000/users/6976eeb39842ddd5e9774d5a
-Accept: application/json
-
-###
-
-# Создать нового пользователя
-POST http://localhost:3000/users
+### REGISTER USER
+POST {{baseUrl}}/users/register
 Content-Type: application/json
 
 {
-  "firstName": "Arujan",
-  "lastName": "Abilmajin",
-  "email": "arujan1@example.com",
+  "email": "testuser@example.com",
+  "password": "12345",
+  "firstName": "Test",
+  "lastName": "User",
   "role": "student"
 }
 
-###
+# После этого запроса:
+# token → вставь в @token
+# userId → вставь в @userId
 
-# Обновить пользователя по ID
-PUT http://localhost:3000/users/6976eeb39842ddd5e9774d5a
+### LOGIN USER
+POST {{baseUrl}}/users/login
 Content-Type: application/json
 
 {
-  "firstName": "Arujan",
-  "lastName": "Abilmajin",
+  "email": "testuser@example.com",
+  "password": "12345"
+}
+
+# После этого запроса:
+# token → вставь в @token
+# userId → вставь в @userId
+
+##############################
+# USERS (Protected routes)
+##############################
+
+### GET ALL USERS
+GET {{baseUrl}}/users
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### GET SINGLE USER
+GET {{baseUrl}}/users/{{userId}}
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### CREATE USER
+POST {{baseUrl}}/users
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "firstName": "Another",
+  "lastName": "User",
+  "email": "another@example.com",
+  "password": "54321",
   "role": "teacher"
 }
 
-###
-
-# Удалить пользователя по ID
-DELETE http://localhost:3000/users/{{USER_ID}}
-
-##############################
-# TASKS
-##############################
-
-# Получить все задачи
-GET http://localhost:3000/tasks
-Accept: application/json
-
-###
-
-# Получить задачу по ID
-GET http://localhost:3000/tasks/{{TASK_ID}}
-Accept: application/json
-
-###
-
-# Создать новую задачу
-POST http://localhost:3000/tasks
+### UPDATE USER
+PUT {{baseUrl}}/users/{{userId}}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "title": "Finish homework",
-  "description": "Math exercises",
-  "dueDate": "2026-02-01",
-  "status": "pending",
-  "priority": 2,
-  "userId": "6976eeb39842ddd5e9774d5a"
+  "role": "teacher"
 }
 
-###
+### DELETE USER
+DELETE {{baseUrl}}/users/{{userId}}
+Authorization: Bearer {{token}}
 
-# Обновить задачу по ID
-PUT http://localhost:3000/tasks/6976f1369842ddd5e9774d5f
+##############################
+# TASKS (Protected routes)
+##############################
+
+### GET ALL TASKS
+GET {{baseUrl}}/tasks
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### GET SINGLE TASK
+GET {{baseUrl}}/tasks/{{taskId}}
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### CREATE TASK
+POST {{baseUrl}}/tasks
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Bring the book",
+  "description": "Math exercises",
+  "status": "pending",
+  "priority": 2,
+  "userId": "{{userId}}",
+  "dueDate": "2026-02-01T12:00:00.000Z"
+}
+
+# После создания задачи:
+# taskId → вставь в @taskId
+
+### UPDATE TASK
+PUT {{baseUrl}}/tasks/{{taskId}}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -82,7 +117,6 @@ Content-Type: application/json
   "priority": 3
 }
 
-###
-
-# Удалить задачу по ID
-DELETE http://localhost:3000/tasks/6976f1369842ddd5e9774d5f
+### DELETE TASK
+DELETE {{baseUrl}}/tasks/{{taskId}}
+Authorization: Bearer {{token}}
